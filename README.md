@@ -1,76 +1,67 @@
-<div align='center'>
-    <br/>
-    <br/>
-    <br/>
-    <h3>htmlrewriter</h3>
-    <p></p>
-    <br/>
-    <br/>
+# Cloudflare Workers `HTMLRewriter` polyfill
+
+🚀 `HTMLRewriter` packaged to work everywhere
+
+<div align=center>
+
+![]()
+
+<!-- prettier-ignore -->
+[RTFill website](https://rtfill.js.org/)
+| [Docs website](https://rtfill.js.org/workerd-html-rewriter)
+| [⚡ StackBlitz playground]()
+| [Cloudflare Workers `HTMLRewriter` docs](https://developers.cloudflare.com/workers/runtime-apis/html-rewriter/)
+
 </div>
 
-Cloudflare `HTMLRewriter` packaged to work with
+<!-- prettier-ignore -->
+✍ Perfect for transforming HTML streams \
+✅ Works in Node.js, [Deno], [Vercel], [Netlify], and browsers \
+🟪 Built with [WebAssembly] for [big performance gains] \
+⚡ Exposes the native `HTMLRewriter` in [Bun] and [Cloudflare Workers] \
+😂 Built on [cloudflare/lol-html], the HTML stream parser that powers the native `HTMLRewriter` \
+📦 Uses [`new URL("big.wasm", import.meta.url)` so your bundler includes the `.wasm` file]
 
--   Node.js (reading the wasm from file system)
--   Next.js (appending `?module` to wasm imports)
--   browser (fetching the wasm file at runtime)
--   Deno (fetching the wasm file at runtime with file:// protocol)
--   Bun & Cloudflare (simply using the global `HTMLRewriter` object)
+## Installation
 
-## Install
-
+```sh
+npm install @rtfill/workerd-html-rewriter
 ```
-npm i htmlrewriter
+
+```js
+import HTMLRewriter from "npm:@rtfill/workerd-html-rewriter";
+import HTMLRewriter from "https://esm.sh/@rtfill/workerd-html-rewriter";
+import HTMLRewriter from "https://esm.run/@rtfill/workerd-html-rewriter";
+```
+
+```js
+import HTMLRewriter from "https://esm.run/@rtfill/workerd-html-rewriter";
+import HTMLRewriter from "https://esm.sh/@rtfill/workerd-html-rewriter";
 ```
 
 ## Usage
 
-```ts
-import { HTMLRewriter } from 'htmlrewriter'
+```js
+import HTMLRewriter from "@rtfill/workerd-html-rewriter";
 
-const rewriter = new HTMLRewriter()
-
-rewriter.on('a', {
-    element(element) {
-        element.setAttribute('href', 'https://www.baidu.com')
+const oldResponse = await fetch("https://nodejs.org/");
+const newResponse = new HTMLRewriter()
+  .on("a", {
+    element(e) {
+      console.log(e.getAttribute("href"));
+      e.setAttribute("href", "https://python.org/");
     },
-})
-const res = rewriter.transform(
-    new Response('<a href="https://www.google.com">google</a>'),
-)
-console.log(await res.text())
+  })
+  .transform(oldResponse);
+const text = await newResponse.text();
+console.log(text);
 ```
 
-## License
-
-`html-rewriter-wasm` uses [lol-html](https://github.com/cloudflare/lol-html/)
-which is BSD 3-Clause licensed:
-
+```js
+import "@rtfill/workerd-html-rewriter/polyfill.js";
+console.log(new HTMLRewriter());
 ```
-Copyright (C) 2019, Cloudflare, Inc.
-All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or
-other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its contributors
-may be used to endorse or promote products derived from this software without
-specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+<!-- prettier-ignore-start -->
+[`new URL("big.wasm", import.meta.url)` so your bundler includes the `.wasm` file]: https://web.dev/bundling-non-js-resources/
+<!-- prettier-ignore-end -->

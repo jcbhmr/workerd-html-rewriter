@@ -1,60 +1,43 @@
 {
-    "name": "htmlrewriter",
-    "version": "0.0.3",
-    "description": "Use Cloudflare HTMLRewriter in Node.js, Browser, Next.js and more",
-    "type": "module",
-    "files": [
-        "dist",
-        "src",
-        "README.md",
-        "bun.js",
-        "vercel.js",
-        "browser.js",
-        "cloudflare.js",
-        "default.js",
-        "node.mjs"
-    ],
-    "types": "dist/index.d.ts",
-    "exports": {
-        ".": {
-            "bun": "./bun.js",
-            "workerd": "./cloudflare.js",
-            "edge-light": "./vercel.js",
-            "node": "./node.mjs",
-            "browser": "./browser.js",
-            "default": "./default.js"
-        },
-        "./package.json": "./package.json"
+  "name": "@rtfill/workerd-html-rewriter",
+  "version": "1.0.0",
+  "description": "🚀 HTMLRewriter packaged to work everywhere",
+  "type": "module",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "bun": "./dist/HTMLRewriter-bun+workerd.js",
+      "edge-light": "./dist/HTMLRewriter-edge-light.js",
+      "node": "./dist/HTMLRewriter-node.js",
+      "default": "./dist/HTMLRewriter-default.js"
     },
-    "scripts": {
-        "try": "bun scripts/try.js && node scripts/try.js && deno run --allow-read scripts/try.js && pnpm vite dev scripts",
-        "prepublishOnly": "pnpm build",
-        "build": "vite-node scripts/build.ts"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/remorses/htmlrewriter.git"
-    },
-    "keywords": [
-        "cloudflare",
-        "workers",
-        "vercel",
-        "worker",
-        "htmlrewriter",
-        "lol"
-    ],
-    "author": "Tommaso De Rossi, morse <beats.by.morse@gmail.com>",
-    "license": "BSD-3-Clause",
-    "bugs": {
-        "url": "https://github.com/remorses/htmlrewriter/issues"
-    },
-    "homepage": "https://github.com/remorses/htmlrewriter#readme",
-    "devDependencies": {
-        "@types/fs-extra": "^11.0.1",
-        "@types/node": "^14.17.5",
-        "@xmorse/deployment-utils": "^0.0.30",
-        "fs-extra": "^11.1.1",
-        "htmlrewriter": "*",
-        "prettier": "^2.3.2"
-    }
+    "./package.json": "./package.json",
+    "./lib/*": null,
+    "./*.js": "./dist/*.js",
+    "./*.wasm": "./dist/*.wasm"
+  },
+  "scripts": {
+    "test": "run-p test:*",
+    "test:node": "vitest",
+    "test:bun": "bun test",
+    "test:deno": "deno test -A",
+    "build": "wasm-pack build && vite build && tsc",
+    "format": "prettier -w .",
+    "lint": "run-p lint:*",
+    "lint:js": "tsc --noEmit",
+    "lint:rs": "cargo check"
+  },
+  "repository": "github:rtfill/workerd-html-rewriter",
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "vercel",
+    "worker",
+    "htmlrewriter",
+    "lol"
+  ],
+  "contributors": ["Tommaso De Rossi, morse <beats.by.morse@gmail.com>"],
+  "license": "BSD-3-Clause",
+  "bugs": "https://github.com/rtfill/workerd-html-rewriter/issues",
+  "homepage": "https://rtfill.js.org/workerd-html-rewriter/"
 }

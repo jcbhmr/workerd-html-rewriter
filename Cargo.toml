@@ -1,6 +1,5 @@
 [package]
-name = "html-rewriter"
-version = "0.3.0"
+name = "rtfill/workerd-html-rewriter"
 authors = ["Ivan Nikulin <inikulin@cloudflare.com>"]
 edition = "2018"
 
